@@ -1,0 +1,5 @@
+POP_SERVER="pop.nonexistent"
+BACKUP_SERVER="backup.nonexistent"
+CMS_PUBLIC_DOMAIN="cms.nonexistent"
+DNS_DOMAIN="nonexistent"
+SUBNET="10.0.0.0/16"
