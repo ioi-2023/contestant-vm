@@ -59,16 +59,7 @@ check_user()
 check_vpn()
 {
 
-	# Try one ping
-	if ping -W 1 -c 1 $POP_SERVER -q > /dev/null; then
-		return 0
-	fi
-
-	# Then try 3 pings before we declare fail
-	if ping -W 1 -c 3 $POP_SERVER -q > /dev/null; then
-		return 0
-	fi
-
+	# XXX
 	return 1
 }
 

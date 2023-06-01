@@ -114,28 +114,7 @@ do_core_setup()
 
 	echo "25"
 
-	curl -m 5 -s -f -o /tmp/vpn.tar.bz2 "https://$POP_SERVER/pop-config/$CRED" > /dev/null 2>&1
-	RC=$?
-	if [ $RC -eq 22  ]; then
-		echo "100"
-		return 3  # wrong password
-	elif [ $RC -ne 0 ]; then
-		echo "100"
-		return 2  # connection issue
-	fi
-
-	echo "50"
-
-	sudo /opt/ioi/bin/ioiconf.sh vpnconfig /tmp/vpn.tar.bz2 $CRED
-	local retval=$?
-	if [ $retval -ne 0 ]; then
-		echo "100"
-		return 4  # internal error
-	fi
-
-	echo "75"
-
-	sudo /opt/ioi/bin/ioiconf.sh vpnrestart
+	# XXX
 
 	echo "100"
 

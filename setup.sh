@@ -270,8 +270,7 @@ resolvectl domain $INTERFACE $DNS_DOMAIN
 systemd-resolve --flush-cache
 
 # Register something on our HTTP server to log connection
-INSTANCEID=$(cat /opt/ioi/run/instanceid.txt)
-wget -qO- https://$POP_SERVER/ping/$NODE-$NAME-$INSTANCEID &> /dev/null
+# XXX
 EOM
 chmod 755 /etc/tinc/vpn/host-up
 cp /etc/tinc/vpn/host-up /opt/ioi/misc/
@@ -284,7 +283,8 @@ EOM
 chmod 755 /etc/tinc/vpn/host-down
 
 # Configure systemd for tinc
-systemctl enable tinc@vpn
+# XXX not for published VM
+#systemctl enable tinc@vpn
 
 systemctl disable multipathd
 

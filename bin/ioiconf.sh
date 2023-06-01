@@ -210,23 +210,11 @@ EOM
 		fi
 		;;
 	getpubkey)
-		curl -m 5 -s -f -o /opt/ioi/misc/id_ansible.pub "https://$POP_SERVER/ansible.pub" > /dev/null 2>&1
-		RC=$?
-		if [ ${RC} -ne 0 ]; then
-			exit ${RC}
-		fi
-		chmod 664 /opt/ioi/misc/id_ansible.pub
-		chown ansible:ansible /opt/ioi/misc/id_ansible.pub
-
-		cp /opt/ioi/misc/id_ansible.pub /home/ansible/.ssh/authorized_keys
-		chmod 600 /home/ansible/.ssh/authorized_keys
-		chown ansible:ansible /home/ansible/.ssh/authorized_keys
+		# XXX
 		exit 0
 		;;
 	keyscan)
-		mkdir -p /root/.ssh
-		ssh-keyscan -H ${BACKUP_SERVER} > /root/.ssh/known_hosts 2> /dev/null
-		chmod 600 /root/.ssh/known_hosts
+		# XXX
 		;;
 	*)
 		echo Not allowed
