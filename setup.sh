@@ -36,10 +36,7 @@ dpkg -i /tmp/zabbix-release_5.0-2+ubuntu22.04_all.deb
 apt -y update
 apt -y upgrade
 
-# Convert server install into a minimuam desktop install
-
-apt -y install tasksel
-tasksel install ubuntu-desktop-minimal ubuntu-desktop-minimal-default-languages
+apt -y install ubuntu-minimal-desktop
 
 # Install tools needed for management and monitoring
 
@@ -55,6 +52,10 @@ apt -y install build-essential autoconf autotools-dev
 apt -y install emacs \
 	geany gedit joe kate kdevelop nano vim vim-gtk3 \
 	ddd valgrind visualvm ruby python3-pip konsole
+
+# Install browser
+
+apt -y install firefox
 
 # Install snap packages needed by contestants
 
@@ -341,6 +342,10 @@ snap list --all | awk '/disabled/{print $1, $3}' | while read snapname revision;
 done
 
 rm -rf /var/lib/snapd/cache/*
+
+# Mark g++ as explicitly needed
+
+apt -y install g++
 
 # Clean up apt
 
