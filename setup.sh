@@ -27,6 +27,21 @@ timedatectl set-timezone Europe/Budapest
 vmware-toolbox-cmd timesync enable
 hwclock -w
 
+# Install zabbix repo
+wget -O /tmp/zabbix-release_5.0-2+ubuntu22.04_all.deb https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-2+ubuntu22.04_all.deb
+dpkg -i /tmp/zabbix-release_5.0-2+ubuntu22.04_all.deb
+
+# Disable needrestart prompt
+export NEEDRESTART_MODE=a
+export DEBIAN_FRONTEND=noninteractive
+
+# Update packages
+
+apt -y update
+apt -y upgrade
+
+apt -y install ubuntu-desktop-minimal
+
 # Networking: tell netplan to use NetworkManager
 
 cat >/etc/netplan/01-netcfg.yaml <<EOF
@@ -37,21 +52,6 @@ EOF
 
 netplan generate
 netplan apply
-
-# Install zabbix repo
-wget -O /tmp/zabbix-release_5.0-2+ubuntu22.04_all.deb https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-2+ubuntu22.04_all.deb
-dpkg -i /tmp/zabbix-release_5.0-2+ubuntu22.04_all.deb
-
-# Update packages
-
-apt -y update
-apt -y upgrade
-
-# Disable needrestart prompt
-export NEEDRESTART_MODE=a
-export DEBIAN_FRONTEND=noninteractive
-
-apt -y install ubuntu-desktop-minimal
 
 # Install tools needed for management and monitoring
 
