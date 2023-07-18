@@ -55,7 +55,8 @@ apt -y install build-essential autoconf autotools-dev
 
 apt -y install emacs \
 	geany gedit joe kate kdevelop nano vim vim-gtk3 \
-	ddd valgrind visualvm ruby python3-pip konsole
+	ddd valgrind visualvm ruby python3-pip konsole \
+	libqt5gui5-gles libqt5quick5-gles clangd
 
 # Install browser
 
