@@ -348,8 +348,6 @@ snap list --all | awk '/disabled/{print $1, $3}' | while read snapname revision;
 	snap remove "$snapname" --revision="$revision"
 done
 
-rm -rf /var/lib/snapd/cache/*
-
 # Mark g++ as explicitly needed
 
 apt -y install g++
@@ -357,8 +355,6 @@ apt -y install g++
 # Clean up apt
 
 apt -y autoremove
-
-apt clean
 
 # Remove desktop backgrounds
 rm -rf /usr/share/backgrounds/*.jpg
