@@ -24,7 +24,7 @@ fi
 # Fix up date/time
 
 timedatectl set-timezone Europe/Budapest
-vmware-toolbox-cmd timesync enable
+#vmware-toolbox-cmd timesync enable
 hwclock -w
 
 # Disable needrestart prompt
@@ -56,11 +56,11 @@ apt -y install net-tools openssh-server ansible xvfb tinc oathtool imagemagick \
 
 # Install local build tools
 
-apt -y install build-essential autoconf autotools-dev
+apt -y install build-essential autoconf autotools-dev python-is-python3
 
 # Install packages needed by contestants
 
-apt -y install emacs \
+apt -y install emacs neovim \
 	geany gedit joe kate kdevelop nano vim vim-gtk3 \
 	ddd valgrind visualvm ruby python3-pip konsole
 
@@ -68,9 +68,14 @@ apt -y install emacs \
 
 apt -y install firefox
 
+# Install atom's latest stable version
+sudo apt install git libasound2 libcurl4 libgbm1 libgcrypt20 libgtk-3-0 libnotify4 libnss3 libglib2.0-bin xdg-utils libx11-xcb1 libxcb-dri3-0 libxss1 libxtst6 libxkbfile1
+wget https://github.com/atom/atom/releases/download/v1.60.0/atom-amd64.deb
+sudo dpkg -i atom-amd64.deb
+sed 's/^Exec=.*$/& --no-sandbox/' -i /usr/share/applications/atom.desktop
+
 # Install snap packages needed by contestants
 
-snap install --classic atom
 snap install --classic code
 snap install --classic sublime-text
 
@@ -106,13 +111,11 @@ mkdir -p /opt/ioi/config/ssh
 
 # Latest as of 2023-05-20
 aria2c -x 4 -d /tmp -o cpptools-linux.vsix "https://github.com/microsoft/vscode-cpptools/releases/download/v1.15.4/cpptools-linux.vsix"
-aria2c -x 4 -d /tmp -o cpp-compile-run.vsix "https://github.com/danielpinto8zz6/c-cpp-compile-run/releases/download/v1.0.45/c-cpp-compile-run-1.0.45.vsix"
 wget -O /tmp/vscodevim.vsix "https://github.com/VSCodeVim/Vim/releases/download/v1.25.2/vim-1.25.2.vsix"
 rm -rf /tmp/vscode
 mkdir /tmp/vscode
 mkdir /tmp/vscode-extensions
 code --install-extension /tmp/cpptools-linux.vsix --extensions-dir /tmp/vscode-extensions --user-data-dir /tmp/vscode
-code --install-extension /tmp/cpp-compile-run.vsix --extensions-dir /tmp/vscode-extensions --user-data-dir /tmp/vscode
 tar jcf /opt/ioi/misc/vscode-extensions.tar.bz2 -C /tmp/vscode-extensions .
 cp /tmp/vscodevim.vsix /opt/ioi/misc
 rm -rf /tmp/vscode-extensions
@@ -187,14 +190,14 @@ chown ansible.ansible ~ansible/.bash_aliases
 
 # Documentation
 
-apt -y install stl-manual python3-doc
+apt -y install python3-doc
 
 # CPP Reference
 
-wget -O /tmp/html_book_20190607.zip http://upload.cppreference.com/mwiki/images/b/b2/html_book_20190607.zip
-mkdir -p /opt/cppref
-unzip -o /tmp/html_book_20190607.zip -d /opt/cppref
-rm -f /tmp/html_book_20190607.zip
+wget -O /tmp/html_book.zip https://github.com/PeterFeicht/cppreference-doc/releases/download/v20220730/html-book-20220730.zip
+mkdir -p /usr/share/doc/cppreference
+unzip -o /tmp/html_book.zip -d /usr/share/doc/cppreference
+rm -f /tmp/html_book.zip
 
 # Build logkeys
 
@@ -238,12 +241,12 @@ apt -y remove autoconf autotools-dev
 
 # Create local HTML
 
-cp -a html /opt/ioi/html
-mkdir -p /opt/ioi/html/fonts
+cp -a html /usr/share/doc/ioi
+mkdir -p /usr/share/doc/ioi/fonts
 wget -O /tmp/fira-sans.zip "https://gwfh.mranftl.com/api/fonts/fira-sans?download=zip&subsets=latin&variants=regular"
 wget -O /tmp/share.zip "https://gwfh.mranftl.com/api/fonts/share?download=zip&subsets=latin&variants=regular"
-unzip -o /tmp/fira-sans.zip -d /opt/ioi/html/fonts
-unzip -o /tmp/share.zip -d /opt/ioi/html/fonts
+unzip -o /tmp/fira-sans.zip -d /usr/share/doc/ioi/fonts
+unzip -o /tmp/share.zip -d /usr/share/doc/ioi/fonts
 rm /tmp/fira-sans.zip
 rm /tmp/share.zip
 
