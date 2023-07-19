@@ -6,18 +6,27 @@ logger -p local0.info "MKIOIUSER: Create a new IOI user"
 useradd -m ioi
 
 # Setup desktop background
-sudo -Hu ioi xvfb-run gsettings set org.gnome.desktop.background picture-options 'centered'
-sudo -Hu ioi xvfb-run gsettings set org.gnome.desktop.background picture-uri \
+sudo -Hu ioi dbus-run-session gsettings set org.gnome.desktop.background picture-options 'centered'
+sudo -Hu ioi dbus-run-session gsettings set org.gnome.desktop.background picture-uri \
 	'file:///opt/ioi/misc/ioi-wallpaper.png'
-sudo -Hu ioi xvfb-run gsettings set org.gnome.shell enabled-extensions "['add-username-ext', 'stealmyfocus-ext']"
-sudo -Hu ioi xvfb-run gsettings set org.gnome.shell disable-user-extensions false
-sudo -Hu ioi xvfb-run gsettings set org.gnome.desktop.session idle-delay 900
-sudo -Hu ioi xvfb-run gsettings set org.gnome.desktop.screensaver lock-delay 30
+sudo -Hu ioi dbus-run-session gsettings set org.gnome.shell enabled-extensions "['add-username-ext', 'stealmyfocus-ext']"
+sudo -Hu ioi dbus-run-session gsettings set org.gnome.shell disable-user-extensions false
+sudo -Hu ioi dbus-run-session gsettings set org.gnome.desktop.session idle-delay 900
+sudo -Hu ioi dbus-run-session gsettings set org.gnome.desktop.screensaver lock-delay 30
+
 if [ -f /opt/ioi/config/screenlock ]; then
-	sudo -Hu ioi xvfb-run gsettings set org.gnome.desktop.screensaver lock-enabled true
+	sudo -Hu ioi dbus-run-session gsettings set org.gnome.desktop.screensaver lock-enabled true
 else
-	sudo -Hu ioi xvfb-run gsettings set org.gnome.desktop.screensaver lock-enabled false
+	sudo -Hu ioi dbus-run-session gsettings set org.gnome.desktop.screensaver lock-enabled false
 fi
+
+# Keyboard layout stuff
+mkdir /home/ioi/Desktop
+cp /usr/share/applications/gnome-keyboard-panel.desktop /home/ioi/Desktop
+chmod +x /home/ioi/Desktop/gnome-keyboard-panel.desktop
+chown ioi.ioi /home/ioi/Desktop/gnome-keyboard-panel.desktop
+sudo -Hu ioi dbus-run-session gio set gnome-keyboard-panel.desktop metadata::trusted true
+sudo -Hu ioi dbus-run-session gsettings set org.gnome.shell.extensions.ding start-corner top-left
 
 # set default fullname and shell
 chfn -f "IOI Contestant" ioi
