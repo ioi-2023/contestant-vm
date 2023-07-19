@@ -27,10 +27,6 @@ timedatectl set-timezone Europe/Budapest
 vmware-toolbox-cmd timesync enable
 hwclock -w
 
-# Install zabbix repo
-wget -O /tmp/zabbix-release_5.0-2+ubuntu22.04_all.deb https://repo.zabbix.com/zabbix/5.0/ubuntu/pool/main/z/zabbix-release/zabbix-release_5.0-2+ubuntu22.04_all.deb
-dpkg -i /tmp/zabbix-release_5.0-2+ubuntu22.04_all.deb
-
 # Disable needrestart prompt
 export NEEDRESTART_MODE=a
 export DEBIAN_FRONTEND=noninteractive
@@ -56,7 +52,7 @@ netplan apply
 # Install tools needed for management and monitoring
 
 apt -y install net-tools openssh-server ansible xvfb tinc oathtool imagemagick \
-	zabbix-agent aria2
+	aria2
 
 # Install local build tools
 
@@ -182,7 +178,6 @@ chown -R ansible.ansible ~ansible/.ssh
 
 sed -i '/%sudo/ s/ALL$/NOPASSWD:ALL/' /etc/sudoers
 echo "ioi ALL=NOPASSWD: /opt/ioi/bin/ioiconf.sh, /opt/ioi/bin/ioiexec.sh, /opt/ioi/bin/ioibackup.sh" >> /etc/sudoers.d/01-ioi
-echo "zabbix ALL=NOPASSWD: /opt/ioi/sbin/genkey.sh" >> /etc/sudoers.d/01-ioi
 chmod 440 /etc/sudoers.d/01-ioi
 
 # setup bash aliases for ansible user
@@ -343,9 +338,6 @@ cat - <<EOM > /etc/apt/apt.conf.d/20auto-upgrades
 APT::Periodic::Update-Package-Lists "0";
 APT::Periodic::Unattended-Upgrade "0";
 EOM
-
-# Use a different config for Zabbix
-sed -i '/^Environment=/ s/zabbix_agentd.conf/zabbix_agentd_ioi.conf/' /lib/systemd/system/zabbix-agent.service
 
 # Remove/clean up unneeded snaps
 
