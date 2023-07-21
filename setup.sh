@@ -62,7 +62,8 @@ apt -y install build-essential autoconf autotools-dev python-is-python3 clangd
 
 apt -y install emacs neovim \
 	geany gedit joe kate kdevelop nano vim vim-gtk3 \
-	ddd valgrind visualvm ruby python3-pip konsole
+	ddd valgrind visualvm ruby python3-pip konsole \
+	cmake
 
 # Install browser
 
@@ -91,6 +92,8 @@ Exec=/opt/eclipse/eclipse
 Type=Application
 Icon=eclipse
 EOM
+
+sed -i '/^-vmargs/a \-Dorg.eclipse.oomph.setup.donate=false' /opt/eclipse/eclipse.ini # According to https://www.eclipse.org/forums/index.php/t/1104324/ ; see: https://github.com/ioi-2023/contestant-vm/issues/21
 
 # Install python3 libraries
 
