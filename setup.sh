@@ -405,6 +405,9 @@ if [ -n "$VERSION" ] ; then
 	echo "$VERSION" > /opt/ioi/misc/VERSION
 fi
 
+# Disable wayland and use xorg instead (see https://github.com/ioi-2023/contestant-vm/issues/35)
+sed -i 's|#WaylandEnable=false|WaylandEnable=false|g' /etc/gdm3/custom.conf
+
 # Deny ioi user from SSH login
 echo "DenyUsers ioi" >> /etc/ssh/sshd_config
 
