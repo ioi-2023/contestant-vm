@@ -81,7 +81,7 @@ snap install --classic code
 snap install --classic sublime-text
 
 # Install Eclipse
-aria2c -x4 -d /tmp -o eclipse.tar.gz "https://mirror.dkm.cz/eclipse/oomph/epp/2023-06/R/eclipse-inst-jre-linux64.tar.gz" # It's probably a faster mirror
+aria2c -x4 -d /tmp -o eclipse.tar.gz "https://mirror.dkm.cz/eclipse/technology/epp/downloads/release/2023-06/R/eclipse-cpp-2023-06-R-linux-gtk-x86_64.tar.gz" # It's probably a faster mirror
 tar zxf /tmp/eclipse.tar.gz -C /opt
 rm /tmp/eclipse.tar.gz
 wget -O /usr/share/pixmaps/eclipse.png "https://icon-icons.com/downloadimage.php?id=94656&root=1381/PNG/64/&file=eclipse_94656.png"
