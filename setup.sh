@@ -62,7 +62,7 @@ apt -y install build-essential autoconf autotools-dev python-is-python3 clangd
 
 apt -y install emacs neovim \
 	geany gedit joe kate kdevelop nano vim vim-gtk3 \
-	ddd valgrind visualvm ruby python3-pip konsole \
+	ddd valgrind ruby python3-pip konsole \
 	cmake
 
 # Install browser
@@ -81,7 +81,7 @@ snap install --classic code
 snap install --classic sublime-text
 
 # Install Eclipse
-aria2c -x4 -d /tmp -o eclipse.tar.gz "https://eclipse.mirror.liteserver.nl/technology/epp/downloads/release/2023-06/R/eclipse-cpp-2023-06-R-linux-gtk-x86_64.tar.gz"
+aria2c -x4 -d /tmp -o eclipse.tar.gz "https://mirror.dkm.cz/eclipse/technology/epp/downloads/release/2023-06/R/eclipse-cpp-2023-06-R-linux-gtk-x86_64.tar.gz" # It's probably a faster mirror
 tar zxf /tmp/eclipse.tar.gz -C /opt
 rm /tmp/eclipse.tar.gz
 wget -O /usr/share/pixmaps/eclipse.png "https://icon-icons.com/downloadimage.php?id=94656&root=1381/PNG/64/&file=eclipse_94656.png"
@@ -92,6 +92,10 @@ Exec=/opt/eclipse/eclipse
 Type=Application
 Icon=eclipse
 EOM
+
+apt install -y openjdk-19-jre
+rm -r /opt/eclipse/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.7.v20230425-1502
+sed -i 's|plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.7.v20230425-1502/jre/bin/java|/usr/bin/java|g' /opt/eclipse/eclipse.ini
 
 sed -i '/^-vmargs/a \-Dorg.eclipse.oomph.setup.donate=false' /opt/eclipse/eclipse.ini # According to https://www.eclipse.org/forums/index.php/t/1104324/ ; see: https://github.com/ioi-2023/contestant-vm/issues/21
 
