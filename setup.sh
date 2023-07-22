@@ -93,7 +93,7 @@ Type=Application
 Icon=eclipse
 EOM
 
-apt install openjdk-19-jre
+apt install -y openjdk-19-jre
 rm -r /opt/eclipse/eclipse/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.7.v20230425-1502
 sed -i 's|plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.7.v20230425-1502/jre/bin/java|/usr/bin/java|g' /opt/eclipse/eclipse.ini
 
