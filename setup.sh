@@ -405,6 +405,23 @@ if [ -n "$VERSION" ] ; then
 	echo "$VERSION" > /opt/ioi/misc/VERSION
 fi
 
+# Disable some of the hardware's capabilities
+# Disable webcam
+echo "blacklist uvcvideo" >> /etc/modprobe.d/blacklist.conf
+# Disable bluetooth
+echo "blacklist btusb" >> /etc/modprobe.d/blacklist.conf
+echo "blacklist btrtl" >> /etc/modprobe.d/blacklist.conf
+echo "blacklist btbcm" >> /etc/modprobe.d/blacklist.conf
+echo "blacklist btintel" >> /etc/modprobe.d/blacklist.conf
+echo "blacklist bluetooth" >> /etc/modprobe.d/blacklist.conf 	
+systemctl disable bluetooth.service
+# Disable wifi
+echo "blacklist iwlwifi" >> /etc/modprobe.d/blacklist.conf
+echo "blacklist iwlmvm" >> /etc/modprobe.d/blacklist.conf
+echo "blacklist cfg80211" >> /etc/modprobe.d/blacklist.conf
+echo "blacklist mac80211" >> /etc/modprobe.d/blacklist.conf
+echo "blacklist libarc4" >> /etc/modprobe.d/blacklist.conf
+
 # Disable wayland and use xorg instead (see https://github.com/ioi-2023/contestant-vm/issues/35)
 sed -i 's|#WaylandEnable=false|WaylandEnable=false|g' /etc/gdm3/custom.conf
 
