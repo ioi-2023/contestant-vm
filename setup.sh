@@ -93,6 +93,10 @@ Type=Application
 Icon=eclipse
 EOM
 
+apt install openjdk-19-jre
+rm -r /opt/eclipse/eclipse/plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.7.v20230425-1502
+sed -i 's|plugins/org.eclipse.justj.openjdk.hotspot.jre.full.linux.x86_64_17.0.7.v20230425-1502/jre/bin/java|/usr/bin/java|g' /opt/eclipse/eclipse.ini
+
 sed -i '/^-vmargs/a \-Dorg.eclipse.oomph.setup.donate=false' /opt/eclipse/eclipse.ini # According to https://www.eclipse.org/forums/index.php/t/1104324/ ; see: https://github.com/ioi-2023/contestant-vm/issues/21
 
 # Install python3 libraries
