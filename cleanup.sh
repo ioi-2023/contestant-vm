@@ -4,6 +4,7 @@ set -e
 
 apt clean
 rm -rf /var/lib/snapd/cache/*
+rm -rf /tmp/cache
 
 rm -rf /var/lib/apt/lists/*
 
