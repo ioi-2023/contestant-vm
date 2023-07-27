@@ -52,8 +52,6 @@ cp -a /opt/ioi/misc/add-username-ext ~ioi/.local/share/gnome-shell/extensions/
 cp -a /opt/ioi/misc/stealmyfocus-ext ~ioi/.local/share/gnome-shell/extensions/
 chown -R ioi.ioi ~ioi/.local/share/gnome-shell/extensions/add-username-ext
 chown -R ioi.ioi ~ioi/.local/share/gnome-shell/extensions/stealmyfocus-ext
-sudo -Hu ioi bash -c 'gnome-extensions enable add-username-ext'
-sudo -Hu ioi bash -c 'gnome-extensions enable stealmyfocus-ext'
 
 # Copy VSCode extensions
 mkdir -p ~ioi/.vscode/extensions
