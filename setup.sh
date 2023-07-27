@@ -21,6 +21,10 @@ if [ -f "config.local.sh" ]; then
 	source config.local.sh
 fi
 
+cache=/tmp/cache
+mkdir -p $cache
+wget="wget -nc -qP $cache --show-progress"
+
 # Fix up date/time
 
 timedatectl set-timezone Europe/Budapest
@@ -51,8 +55,7 @@ netplan apply
 
 # Install tools needed for management and monitoring
 
-apt -y install net-tools openssh-server ansible xvfb tinc oathtool imagemagick \
-	aria2
+apt -y install net-tools openssh-server ansible xvfb tinc oathtool imagemagick
 
 # Install local build tools
 
@@ -70,9 +73,9 @@ apt -y install emacs neovim \
 apt -y install firefox
 
 # Install atom's latest stable version
-sudo apt install git libasound2 libcurl4 libgbm1 libgcrypt20 libgtk-3-0 libnotify4 libnss3 libglib2.0-bin xdg-utils libx11-xcb1 libxcb-dri3-0 libxss1 libxtst6 libxkbfile1
-wget https://github.com/atom/atom/releases/download/v1.60.0/atom-amd64.deb
-sudo dpkg -i atom-amd64.deb
+$wget -O $cache/atom-1.60.0.deb https://github.com/atom/atom/releases/download/v1.60.0/atom-amd64.deb
+dpkg -i $cache/atom-1.60.0.deb
+apt -f install
 sed 's/^Exec=.*$/& --no-sandbox/' -i /usr/share/applications/atom.desktop
 
 # Install snap packages needed by contestants
@@ -81,10 +84,9 @@ snap install --classic code
 snap install --classic sublime-text
 
 # Install Eclipse
-aria2c -x4 -d /tmp -o eclipse.tar.gz "https://eclipse.mirror.liteserver.nl/technology/epp/downloads/release/2023-06/R/eclipse-cpp-2023-06-R-linux-gtk-x86_64.tar.gz"
-tar zxf /tmp/eclipse.tar.gz -C /opt
-rm /tmp/eclipse.tar.gz
-wget -O /usr/share/pixmaps/eclipse.png "https://icon-icons.com/downloadimage.php?id=94656&root=1381/PNG/64/&file=eclipse_94656.png"
+$wget "https://mirror.dkm.cz/eclipse/technology/epp/downloads/release/2023-06/R/eclipse-cpp-2023-06-R-linux-gtk-x86_64.tar.gz"
+tar zxf $cache/eclipse-cpp-2023-06-R-linux-gtk-x86_64.tar.gz -C /opt
+cp /opt/eclipse/plugins/org.eclipse.epp.package.cpp_4.28.0.20230608-1200/eclipse256.png /usr/share/pixmaps/eclipse.png
 cat - <<EOM > /usr/share/applications/eclipse.desktop
 [Desktop Entry]
 Name=Eclipse
@@ -112,15 +114,15 @@ mkdir -p /opt/ioi/store/screenshots
 mkdir -p /opt/ioi/store/submissions
 mkdir -p /opt/ioi/config/ssh
 
-# Latest as of 2023-05-20
-aria2c -x 4 -d /tmp -o cpptools-linux.vsix "https://github.com/microsoft/vscode-cpptools/releases/download/v1.15.4/cpptools-linux.vsix"
-wget -O /tmp/vscodevim.vsix "https://github.com/VSCodeVim/Vim/releases/download/v1.25.2/vim-1.25.2.vsix"
+# Latest as of 2023-07-23
+$wget -O $cache/cpptools-1.16.3.vsix "https://github.com/microsoft/vscode-cpptools/releases/download/v1.16.3/cpptools-linux.vsix"
+$wget "https://github.com/VSCodeVim/Vim/releases/download/v1.25.2/vim-1.25.2.vsix"
 rm -rf /tmp/vscode
 mkdir /tmp/vscode
 mkdir /tmp/vscode-extensions
-code --install-extension /tmp/cpptools-linux.vsix --extensions-dir /tmp/vscode-extensions --user-data-dir /tmp/vscode
+code --install-extension $cache/cpptools-1.16.3.vsix --extensions-dir /tmp/vscode-extensions --user-data-dir /tmp/vscode
 tar jcf /opt/ioi/misc/vscode-extensions.tar.bz2 -C /tmp/vscode-extensions .
-cp /tmp/vscodevim.vsix /opt/ioi/misc
+cp $cache/vim-1.25.2.vsix /opt/ioi/misc/vscodevim.vsix
 rm -rf /tmp/vscode-extensions
 
 # Add default timezone
@@ -197,10 +199,9 @@ apt -y install python3-doc
 
 # CPP Reference
 
-wget -O /tmp/html_book.zip https://github.com/PeterFeicht/cppreference-doc/releases/download/v20220730/html-book-20220730.zip
+$wget https://github.com/PeterFeicht/cppreference-doc/releases/download/v20220730/html-book-20220730.zip
 mkdir -p /usr/share/doc/cppreference
-unzip -o /tmp/html_book.zip -d /usr/share/doc/cppreference
-rm -f /tmp/html_book.zip
+unzip -o $cache/html-book-20220730.zip -d /usr/share/doc/cppreference
 
 # Build logkeys
 
@@ -246,12 +247,10 @@ apt-mark auto autoconf autotools-dev
 
 cp -a html /usr/share/doc/ioi
 mkdir -p /usr/share/doc/ioi/fonts
-wget -O /tmp/fira-sans.zip "https://gwfh.mranftl.com/api/fonts/fira-sans?download=zip&subsets=latin&variants=regular"
-wget -O /tmp/share.zip "https://gwfh.mranftl.com/api/fonts/share?download=zip&subsets=latin&variants=regular"
-unzip -o /tmp/fira-sans.zip -d /usr/share/doc/ioi/fonts
-unzip -o /tmp/share.zip -d /usr/share/doc/ioi/fonts
-rm /tmp/fira-sans.zip
-rm /tmp/share.zip
+$wget -O $cache/fira-sans.zip "https://gwfh.mranftl.com/api/fonts/fira-sans?download=zip&subsets=latin&variants=regular"
+$wget -O $cache/share.zip "https://gwfh.mranftl.com/api/fonts/share?download=zip&subsets=latin&variants=regular"
+unzip -o $cache/fira-sans.zip -d /usr/share/doc/ioi/fonts
+unzip -o $cache/share.zip -d /usr/share/doc/ioi/fonts
 
 # Tinc Setup and Configuration
 
