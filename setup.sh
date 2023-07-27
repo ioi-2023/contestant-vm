@@ -59,7 +59,7 @@ netplan apply
 
 # Install tools needed for management and monitoring
 
-apt -y install net-tools openssh-server ansible xvfb tinc oathtool imagemagick \
+apt -y install net-tools ansible xvfb tinc oathtool imagemagick \
 	zabbix-agent
 
 # Install local build tools
