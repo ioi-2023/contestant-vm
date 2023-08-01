@@ -8,38 +8,7 @@ TIMENOW=$(date +"%Y-%m-%d %H:%M")
 
 schedule()
 {
-	JOBID=$1
-
-	if [ $(wc -l $SCHEDULE | cut -d\  -f1) -lt "$JOBID" ]; then
-		logger -p local0.info "ATRUN: Scheduling job $JOBID does not exist"
-		return 1
-	fi
-
-	# Get details of job to schedule
-	JOB=$(cat $SCHEDULE | head -$JOBID | tail -1)
-	ATTIME=$(echo "$JOB" | awk '{print($2, $1)}')
-	NEXTTIME=$(echo "$JOB" | awk '{print($1, $2)}')
-	CMD=$(echo "$JOB" | cut -d\  -f6-)
-
-	# Check if the job is over
-	if [ "$TIMENOW" \> "$NEXTTIME" -o "$TIMENOW" = "$NEXTTIME" ]; then
-		logger -p local0.info "ATRUN: Scheduling job $JOBID at $NEXTTIME is in the past"
-		execute $JOBID
-		return
-	fi
-
-	# Remove existing jobs that were created by this script
-	for i in `atq | cut -f1`; do
-		if at -c $i | grep -q '# AUTO-CONTEST-SCHEDULE'; then
-			atrm $i
-		fi
-	done
-
-	cat - <<EOM | at -M "$ATTIME" 2> /dev/null
-# AUTO-CONTEST-SCHEDULE
-/opt/ioi/sbin/atrun.sh exec $JOBID
-EOM
-	#echo $date, $time, $cmd
+	# XXX 
 
 	logger -p local0.info "ATRUN: Scheduling next job $JOBID at $NEXTTIME"
 }

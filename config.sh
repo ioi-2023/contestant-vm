@@ -1,0 +1,5 @@
+export POP_SERVER="pop.nonexistent"
+export BACKUP_SERVER="backup.nonexistent"
+export CMS_PUBLIC_DOMAIN="cms.nonexistent"
+export DNS_DOMAIN="nonexistent"
+export SUBNET="10.0.0.0/16"
