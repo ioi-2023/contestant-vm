@@ -30,7 +30,7 @@ cp /opt/eclipse/plugins/org.eclipse.epp.package.cpp_4.28.0.20230608-1200/eclipse
 cat - <<EOM > /usr/share/applications/eclipse.desktop
 [Desktop Entry]
 Name=Eclipse
-Exec=/opt/eclipse/eclipse
+Exec=env GDK_BACKEND=x11 /opt/eclipse/eclipse
 Type=Application
 Icon=eclipse
 EOM
