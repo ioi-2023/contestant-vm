@@ -46,12 +46,12 @@ banner()
 
 create_snapshot()
 {
-  dd if=/dev/nvme0n1p2 of=/dev/nvme0n1p3
+  dd bs=64M if=/dev/nvme0n1p2 of=/dev/nvme0n1p3
 }
 
 rollback_snapshot()
 {
-  dd if=/dev/nvme0n1p3 of=/dev/nvme0n1p2
+  dd bs=64M if=/dev/nvme0n1p3 of=/dev/nvme0n1p2
 }
 
 
@@ -64,7 +64,7 @@ echo ""
 
 if ! read -t 5 -n 1; then
   banner "Snapshot creation aborted!"
-  sleep 5
+  sleep 3
 else
   create_snapshot
 
@@ -79,7 +79,7 @@ echo "                Booting up in 15 seconds"
 echo "  ==================================================="
 echo ""
 
-if ! read -t 15 -n 1; then
+if ! read -t 5 -n 1; then
 
   banner "Rollback aborted! The filesystem contents will be preserved!"
   exit 0
