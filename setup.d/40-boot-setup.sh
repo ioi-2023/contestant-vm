@@ -62,8 +62,9 @@ echo "           Press any key to create snapshot!"
 echo "  ==================================================="
 echo ""
 
-if ! read -t 15 -n 1; then
+if ! read -t 5 -n 1; then
   banner "Snapshot creation aborted!"
+  sleep 5
 else
   create_snapshot
 
