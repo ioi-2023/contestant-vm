@@ -6,9 +6,6 @@ set -e
 sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/ s/splash//' /etc/default/grub
 update-grub2
 
-VG="ubuntu-vg"
-ORIGIN_LV="ubuntu-lv"
-SNAPSHOT_LV="ubuntu-snapshot"
 
 cat <<EOM >/etc/initramfs-tools/scripts/local-premount/prompt
 #!/bin/sh
@@ -49,51 +46,46 @@ banner()
 
 create_snapshot()
 {
-  lvm lvcreate -s -p r -v -n "${SNAPSHOT_LV}" -l '100%ORIGIN' "${VG}/${ORIGIN_LV}"
+  dd if=/dev/nvme0n1p2 of=/dev/nvme0n1p3
 }
 
 rollback_snapshot()
 {
-  lvm lvconvert --mergesnapshot -v -i 2 -y "${VG}/${SNAPSHOT_LV}"
+  dd of=/dev/nvme0n1p2 if=/dev/nvme0n1p3
 }
 
-# main
 
-if [ \$(lvm vgs --noheadings -o vg_name 2>/dev/null | grep "${VG}" | wc -l) -ne "1" ]; then
-  panic "The presence of the volume group is dubious!"
-fi
 
-if ! lvm lvs --noheadings -o lv_name "${VG}" 2>/dev/null | grep -qs "${ORIGIN_LV}" 2>/dev/null; then
-  panic "Origin LV not found!"
-fi
+echo ""
+echo "  ==================================================="
+echo "           Press any key to create snapshot!"
+echo "  ==================================================="
+echo ""
 
-if lvm lvs --noheadings -o lv_name "${VG}" 2>/dev/null | grep -qs "${SNAPSHOT_LV}" 2>/dev/null; then
-  # Yes snapshot
-
-  echo ""
-  echo "  ==================================================="
-  echo "           Press any key to attempt rollback!"
-  echo "                Booting up in 15 seconds"
-  echo "  ==================================================="
-  echo ""
-
-  if ! read -t 15 -n 1; then
-
-    banner "Rollback aborted! The filesystem contents will be preserved!"
-    exit 0
-
-  fi
-
-  # Perform rollback
-  rollback_snapshot
-  banner "Restoring OS and booting up"
-  reboot -f
+if ! read -t 15 -n 1; then
+  banner "Snapshot creation aborted!"
 else
-  # No snapshot
-  banner "First boot after setting up! Will create snapshot!"
-
   create_snapshot
-  banner "Snapshot created! Will shut down now."
+
+  banner "Creating snapshot and rebooting"
+  reboot -f
+fi
+
+echo ""
+echo "  ==================================================="
+echo "           Press any key to attempt rollback!"
+echo "                Booting up in 15 seconds"
+echo "  ==================================================="
+echo ""
+
+if ! read -t 15 -n 1; then
+
+  banner "Rollback aborted! The filesystem contents will be preserved!"
+  exit 0
+else
+  rollback_snapshot
+
+  banner "Creating snapshot and rebooting"
   reboot -f
 fi
 EOM
