@@ -46,12 +46,12 @@ banner()
 
 create_snapshot()
 {
-  dd if=/dev/nvme0n1p2 of=/dev/nvme0n1p3 bs=1M
+  dd if=/dev/nvme0n1p2 of=/dev/nvme0n1p3
 }
 
 rollback_snapshot()
 {
-  dd if=/dev/nvme0n1p3 of=/dev/nvme0n1p2 bs=1M
+  dd if=/dev/nvme0n1p3 of=/dev/nvme0n1p2
 }
 
 
