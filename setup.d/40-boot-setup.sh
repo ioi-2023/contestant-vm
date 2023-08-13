@@ -70,25 +70,20 @@ if [ -f "/diskimage/snapshot.created" ]; then
 else
   echo ""
   echo "  ==================================================="
-  echo "           Press any key to create snapshot!"
+  echo "                   Creating snapshot!"
   echo "  ==================================================="
   echo ""
 
-  if ! read -t 5 -n 1; then
-    banner "Snapshot creation aborted!"
-    sleep 3
-  else
-    banner "Creating snapshot"
-    create_snapshot
-    umount  /diskimage
-    mount /dev/nvme0n1p2 /diskimage
-    umount  /diskimage
-    touch /diskimage/prevent.rollback
-    banner "Successfully created snapshot, press any key to shutdown"
-    read -n 1
-    banner "Shutting down"
-    poweroff -f
-  fi
+  banner "Creating snapshot"
+  create_snapshot
+  umount  /diskimage
+  mount /dev/nvme0n1p2 /diskimage
+  umount  /diskimage
+  touch /diskimage/prevent.rollback
+  banner "Successfully created snapshot, press any key to shutdown"
+  read -n 1
+  banner "Shutting down"
+  poweroff -f
 fi
 
 umount  /diskimage
