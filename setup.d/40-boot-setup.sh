@@ -46,12 +46,16 @@ banner()
 
 create_snapshot()
 {
-  dd bs=1048576 if=/dev/nvme0n1p2 of=/dev/nvme0n1p3
+  mkdir /mnt/diskimage
+  mount /dev/nvme0n1p3 /mnt/diskimage
+  dd bs=1048576 if=/dev/nvme0n1p2 of=/mnt/diskimage/image.img
 }
 
 rollback_snapshot()
 {
-  dd bs=1048576 if=/dev/nvme0n1p3 of=/dev/nvme0n1p2
+  mkdir /mnt/diskimage
+  mount /dev/nvme0n1p3 /mnt/diskimage
+  dd bs=1048576 if=/mnt/diskimage/image.img of=/dev/nvme0n1p2
 }
 
 
@@ -66,9 +70,10 @@ if ! read -t 5 -n 1; then
   banner "Snapshot creation aborted!"
   sleep 3
 else
+  banner "Creating snapshot"
   create_snapshot
 
-  banner "Creating snapshot and rebooting"
+  banner "Rebooting"
   reboot -f
 fi
 
@@ -84,9 +89,10 @@ if ! read -t 5 -n 1; then
   banner "Rollback aborted! The filesystem contents will be preserved!"
   exit 0
 else
+  echo "Rolling back"
   rollback_snapshot
 
-  banner "Creating snapshot and rebooting"
+  banner "Rebooting"
   reboot -f
 fi
 EOM
