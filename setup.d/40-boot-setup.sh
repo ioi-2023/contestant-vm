@@ -73,8 +73,8 @@ else
   banner "Creating snapshot"
   create_snapshot
 
-  banner "Rebooting"
-  reboot -f
+  banner "Shutting down"
+  poweroff -f
 fi
 
 echo ""
