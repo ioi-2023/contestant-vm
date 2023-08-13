@@ -78,8 +78,8 @@ else
   create_snapshot
   umount  /diskimage
   mount /dev/nvme0n1p2 /diskimage
-  umount  /diskimage
   touch /diskimage/prevent.rollback
+  umount  /diskimage
   banner "Successfully created snapshot, press any key to shutdown"
   read -n 1
   banner "Shutting down"
