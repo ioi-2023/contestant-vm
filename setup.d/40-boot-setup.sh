@@ -86,26 +86,41 @@ else
   fi
 fi
 
+umount  /diskimage
+mount /dev/nvme0n1p2 /diskimage
 
-
-echo ""
-echo "  ==================================================="
-echo "           Press any key to attempt rollback!"
-echo "                Booting up in 15 seconds"
-echo "  ==================================================="
-echo ""
-
-if ! read -t 5 -n 1; then
-
-  banner "Rollback aborted! The filesystem contents will be preserved!"
-  exit 0
+if [ -f "/diskimage/prevent.rollback" ]; then
+  umount  /diskimage
+  banner "Rollback disabled!"
 else
-  echo "Rolling back"
-  rollback_snapshot
+  umount  /diskimage
+  echo ""
+  echo "  ==================================================="
+  echo "           Press any key to attempt rollback!"
+  echo "                Booting up in 15 seconds"
+  echo "  ==================================================="
+  echo ""
 
-  banner "Rebooting"
-  reboot -f
+  if ! read -t 15 -n 1; then
+
+    banner "Rollback aborted! The filesystem contents will be preserved!"
+    exit 0
+  else
+    mount /dev/nvme0n1p3 /diskimage
+    banner "Rolling back"
+    rollback_snapshot
+    umount  /diskimage
+    mount /dev/nvme0n1p2 /diskimage
+    umount  /diskimage
+    touch /diskimage/prevent.rollback
+    banner "Successfull rollback, press any key to reboot"
+    read -n 1
+    banner "Rebooting"
+    reboot -f
+  fi
 fi
+
+
 EOM
 chmod 755 /etc/initramfs-tools/scripts/local-premount/prompt
 
