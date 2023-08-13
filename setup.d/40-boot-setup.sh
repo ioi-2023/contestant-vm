@@ -80,6 +80,10 @@ else
   else
     banner "Creating snapshot"
     create_snapshot
+    umount  /diskimage
+    mount /dev/nvme0n1p2 /diskimage
+    umount  /diskimage
+    touch /diskimage/prevent.rollback
     banner "Successfully created snapshot, press any key to shutdown"
     read -n 1
     banner "Shutting down"
