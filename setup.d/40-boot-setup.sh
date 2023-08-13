@@ -62,6 +62,14 @@ mount /dev/nvme0n1p3 /diskimage
 if [ -f "/diskimage/snapshot.created" ]; then
   echo ""
   echo "  ==================================================="
+  echo "             Snapshot creation disabled,"
+  echo "               snapshot already exists!"
+  echo "  ==================================================="
+  echo ""
+
+else
+  echo ""
+  echo "  ==================================================="
   echo "           Press any key to create snapshot!"
   echo "  ==================================================="
   echo ""
@@ -76,14 +84,6 @@ if [ -f "/diskimage/snapshot.created" ]; then
     banner "Shutting down"
     poweroff -f
   fi
-
-else
-  echo ""
-  echo "  ==================================================="
-  echo "             Snapshot creation disabled,"
-  echo "               snapshot already exists!"
-  echo "  ==================================================="
-  echo ""
 fi
 
 
