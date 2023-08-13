@@ -46,16 +46,16 @@ banner()
 
 create_snapshot()
 {
-  mkdir /mnt/diskimage
-  mount /dev/nvme0n1p3 /mnt/diskimage
-  dd bs=1048576 if=/dev/nvme0n1p2 of=/mnt/diskimage/image.img
+  mkdir /diskimage
+  mount /dev/nvme0n1p3 /diskimage
+  dd bs=1048576 if=/dev/nvme0n1p2 of=/diskimage/image.img
 }
 
 rollback_snapshot()
 {
-  mkdir /mnt/diskimage
-  mount /dev/nvme0n1p3 /mnt/diskimage
-  dd bs=1048576 if=/mnt/diskimage/image.img of=/dev/nvme0n1p2
+  mkdir /diskimage
+  mount /dev/nvme0n1p3 /diskimage
+  dd bs=1048576 if=/diskimage/image.img of=/dev/nvme0n1p2
 }
 
 
