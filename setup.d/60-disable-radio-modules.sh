@@ -60,7 +60,7 @@ echo "blacklist btrtl" >> /etc/modprobe.d/blacklist.conf
 echo "blacklist btbcm" >> /etc/modprobe.d/blacklist.conf
 echo "blacklist btintel" >> /etc/modprobe.d/blacklist.conf
 echo "blacklist bluetooth" >> /etc/modprobe.d/blacklist.conf 	
-systemctl disable bluetooth.service
+#systemctl disable bluetooth.service
 
 # From dmesg I got a hint that the WiFi card's kernel module is `iwlwifi`. Then I have went it with the exact same method as in bluetooth (described above).
 # Disable wifi
