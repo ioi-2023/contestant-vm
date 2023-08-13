@@ -80,7 +80,8 @@ else
   else
     banner "Creating snapshot"
     create_snapshot
-
+    banner "Successfully created snapshot, press any key to shutdown"
+    read -n 1
     banner "Shutting down"
     poweroff -f
   fi
