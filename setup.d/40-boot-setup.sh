@@ -95,7 +95,7 @@ echo "                Booting up in 15 seconds"
 echo "  ==================================================="
 echo ""
 
-if ! read -t 5 -n 1; then
+if ! read -t 15 -n 1; then
 
   banner "Rollback aborted! The filesystem contents will be preserved!"
   exit 0
