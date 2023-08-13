@@ -46,36 +46,47 @@ banner()
 
 create_snapshot()
 {
-  mkdir /diskimage
-  mount /dev/nvme0n1p3 /diskimage
   dd bs=1048576 if=/dev/nvme0n1p2 of=/diskimage/image.img
+  touch /diskimage/snapshot.created
 }
 
 rollback_snapshot()
 {
-  mkdir /diskimage
-  mount /dev/nvme0n1p3 /diskimage
   dd bs=1048576 if=/diskimage/image.img of=/dev/nvme0n1p2
 }
 
+mkdir /diskimage
+mount /dev/nvme0n1p3 /diskimage
 
 
-echo ""
-echo "  ==================================================="
-echo "           Press any key to create snapshot!"
-echo "  ==================================================="
-echo ""
+if [ -f "/diskimage/snapshot.created" ]; then
+  echo ""
+  echo "  ==================================================="
+  echo "             Snapshot creation disabled,"
+  echo "               snapshot already exists!"
+  echo "  ==================================================="
+  echo ""
 
-if ! read -t 5 -n 1; then
-  banner "Snapshot creation aborted!"
-  sleep 3
 else
-  banner "Creating snapshot"
-  create_snapshot
+  echo ""
+  echo "  ==================================================="
+  echo "           Press any key to create snapshot!"
+  echo "  ==================================================="
+  echo ""
 
-  banner "Shutting down"
-  poweroff -f
+  if ! read -t 5 -n 1; then
+    banner "Snapshot creation aborted!"
+    sleep 3
+  else
+    banner "Creating snapshot"
+    create_snapshot
+
+    banner "Shutting down"
+    poweroff -f
+  fi
 fi
+
+
 
 echo ""
 echo "  ==================================================="
